@@ -1,0 +1,20 @@
+FROM node:18-alpine
+
+# 设置工作目录
+WORKDIR /app
+
+# 复制依赖文件
+COPY package.json yarn.lock ./
+
+# 配置镜像源并安装依赖
+RUN yarn config set registry 'https://registry.npmmirror.com/' && \
+    yarn install
+
+# 复制所有代码
+COPY . .
+
+# 暴露端口
+EXPOSE 3001
+
+# 启动开发服务器(包含 mask:watch)
+CMD ["yarn", "dev"]
